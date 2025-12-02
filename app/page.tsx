@@ -2,29 +2,32 @@ import Script from "next/script";
 import Link from "next/link";
 import Image from "next/image";
 
-const productCards = [
-  {
-    id: "dplus",
-    href: "/products/dplus",
-    title: "파비스 디플러스",
-    badge: "장 케어",
-    description: "배변 원활 · 노폐물 배출에 도움을 줄 수 있습니다",
-    image: "/images/13.jpg",
-    alt: "파비스 애니원 디플러스 효소",
-    originalPrice: 84000,
-    salePrice: 58800,
-  },
-  {
-    id: "milzyme",
-    href: "/products/milzyme",
-    title: "파비스 밀자임",
-    badge: "소화 케어",
-    description: "식후 소화 · 장내 환경 개선에 도움을 줄 수 있습니다",
-    image: "/images/25.jpg",
-    alt: "파비스 애니원 밀자임 효소",
-    originalPrice: 134000,
-    salePrice: 93800,
-  },
+const BASIC_ORIGINAL = 268000;
+const BASIC_SALE = 186000;
+
+const PREMIUM_ORIGINAL = 576000;
+const PREMIUM_SALE = 399000;
+
+const formatPrice = (value: number) =>
+  value.toLocaleString("ko-KR");
+
+const getDiscountPercent = (original: number, sale: number) =>
+  Math.round((1 - sale / original) * 100);
+
+type ProductCard = {
+  id: string;
+  href: string;
+  title: string;
+  badge: string;
+  description: string;
+  image: string;
+  alt: string;
+  originalPrice: number;
+  salePrice: number;
+  badgeAccent?: boolean;
+};
+
+const programProductCards: ProductCard[] = [
   {
     id: "slim",
     href: "/products/slim",
@@ -35,7 +38,29 @@ const productCards = [
     alt: "파비스 애니원 다이어트 슬림",
     badgeAccent: true,
     originalPrice: 224000,
-    salePrice: 156800,
+    salePrice: 156800, // 30% OFF
+  },
+  {
+    id: "milzyme",
+    href: "/products/milzyme",
+    title: "파비스 밀자임",
+    badge: "소화 케어",
+    description: "식후 소화 · 장내 환경 개선에 도움을 줄 수 있습니다",
+    image: "/images/25.jpg",
+    alt: "파비스 애니원 밀자임 효소",
+    originalPrice: 134000,
+    salePrice: 93800, // 30% OFF
+  },
+  {
+    id: "dplus",
+    href: "/products/dplus",
+    title: "파비스 디플러스",
+    badge: "장 케어",
+    description: "배변 원활 · 노폐물 배출에 도움을 줄 수 있습니다",
+    image: "/images/13.jpg",
+    alt: "파비스 애니원 디플러스 효소",
+    originalPrice: 84000,
+    salePrice: 58800, // 30% OFF
   },
   {
     id: "tea",
@@ -46,7 +71,7 @@ const productCards = [
     image: "/images/24.jpg",
     alt: "파비스 애니원 다이어트 차",
     originalPrice: 50000,
-    salePrice: 35000,
+    salePrice: 35000, // 30% OFF
   },
   {
     id: "qzyme",
@@ -55,21 +80,68 @@ const productCards = [
     badge: "숙변 케어",
     description: "장 정화 · 숙변 배출에 도움을 줄 수 있습니다",
     image: "/images/26.jpg",
-    alt: "파비스 애니원 다이어트 차",
+    alt: "파비스 애니원 큐자임 효소",
     originalPrice: 84000,
-    salePrice: 58800,
+    salePrice: 58800, // 30% OFF
   },
+];
+
+const functionalProductCards: ProductCard[] = [
   {
     id: "sokzyme",
     href: "/products/sokzyme",
     title: "파비스 속자임",
     badge: "속 편안",
-    description: "속 쓰림 완화 · 위 건강에 도움을 줄 수 있습니다",
+    description: "속 쓰림 완화 · 위 건강 관리에 도움을 줄 수 있습니다",
     image: "/images/27.jpg",
     alt: "파비스 애니원 속자임 효소",
     originalPrice: 108000,
-    salePrice: 75600,
-  }
+    salePrice: 75600, // 30% OFF
+  },
+  {
+    id: "sumzyme",
+    href: "/products/sumzyme",
+    title: "파비스 숨자임",
+    badge: "호흡 케어",
+    description: "호흡이 답답하고 가슴이 묵직한 분들의 컨디션 관리용 제품입니다",
+    image: "/images/31.jpg",
+    alt: "파비스 숨자임",
+    originalPrice: 140000,
+    salePrice: 98000, // 30% OFF
+  },
+  {
+    id: "sunzyme",
+    href: "/products/sunzyme",
+    title: "파비스 썬자임",
+    badge: "활력 케어",
+    description: "기력 저하 · 쉽게 피로해지는 분들의 일상 활력 케어용 제품입니다",
+    image: "/images/30.jpg",
+    alt: "파비스 썬자임",
+    originalPrice: 132000,
+    salePrice: 92400, // 30% OFF
+  },
+  {
+    id: "prozyme",
+    href: "/products/prozyme",
+    title: "파비스 프로자임",
+    badge: "프로페셔널",
+    description: "이미지 추후 교체 예정 – 전문적인 케어를 원하시는 분들을 위한 라인업입니다",
+    image: "/images/prozyme.jpg", // 나중에 대표님이 실제 이미지 교체
+    alt: "파비스 프로자임 (이미지 교체 예정)",
+    originalPrice: 140000,
+    salePrice: 98000, // 30% OFF
+  },
+  {
+    id: "activezyme",
+    href: "/products/activezyme",
+    title: "파비스 활동자임",
+    badge: "활동량 케어",
+    description: "움직임이 많은 날, 운동 전후 컨디션 관리용 라인업입니다 (이미지 교체 예정)",
+    image: "/images/activezyme.jpg", // 나중에 대표님이 실제 이미지 교체
+    alt: "파비스 활동자임 (이미지 교체 예정)",
+    originalPrice: 140000,
+    salePrice: 98000, // 30% OFF
+  },
 ];
 
 export default function Home() {
@@ -93,7 +165,7 @@ export default function Home() {
                               <li><a href="#target" className="nav-link">추천 대상</a></li>
                               <li><a href="#reviews" className="nav-link">실제 후기</a></li>
                               <li><a href="#faq" className="nav-link">FAQ</a></li>
-                              <li><a href="#contact" className="nav-link nav-cta">신청하기</a></li>
+                              <li><a href="#contact" className="nav-link nav-cta">구매하기</a></li>
                           </ul>
                       </nav>
       
@@ -112,17 +184,15 @@ export default function Home() {
                   <div className="hero-content">
                       <div className="hero-text fade-in">
                           <h2 className="hero-headline">다이어트! 의지?! <br />효소로, EASY 하게</h2>
-                          <p className="hero-subtext">파비스 애니원 효소와 함께 하는<br />다이어트 · 장 디톡스 · 절식 EASY 루틴</p>
-                          <p className="hero-description">· MZ들의 요즘 다어어트 필수템</p>
-                          <p className="hero-description">· 중년 여성도 부담 없이 시작할 수 있는 간편한 효소 루틴</p>
-                          <p className="hero-description">· 굶으면서 버티는 다이어트 말고<br />하루 한 포로 장부터 가볍게 시작해 보세요</p>
+                          <p className="hero-subtext">파비스 애니원 효소와 함께 하는<br />20 DAY 다이어트 프로그램</p>
+                          <p className="hero-description">· 굶으면서 버티는 다이어트 말고<br />하루 한 포로 가볍게 시작해 보세요</p>
       
       
                           <div className="hero-trust">
       
                           </div>
                           <div className="hero-cta">
-                              <a href="#contact" className="btn btn-primary">EASY하게 시작하기</a>
+                              <a href="#contact" className="btn btn-primary">다이어트 시작하기</a>
                               <a href="#contact" className="btn btn-secondary">카카오톡 상담하기</a>
                           </div>
       
@@ -137,7 +207,7 @@ export default function Home() {
                               </div>
                               <div className="stat-item">
                                   <span className="stat-number">15,000+</span>
-                                  <span className="stat-label">누적 고객</span>
+                                  <span className="stat-label">총 누적 고객</span>
                               </div>
                           </div>
                       </div>
@@ -157,11 +227,14 @@ export default function Home() {
           <section className="program-section" id="program">
               <div className="container">
                   <div className="section-header fade-in">
-                      <h2 className="section-title">체계적인 4단계 프로그램</h2>
+                      <h2 className="section-title">파비스만의 4단계 프로그램</h2>
                       <p className="section-subtitle">과학적으로 설계된 다이어트 프로세스</p>
                   </div>
+
+                  
       
                   <div className="timeline">
+                    
                       <div className="timeline-item fade-in">
                           <div className="timeline-icon">
                               <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -169,6 +242,7 @@ export default function Home() {
                                   <path d="M24 14V28M18 24H30" stroke="#6BAA46" strokeWidth="3" strokeLinecap="round" />
                               </svg>
                           </div>
+                          
                           <div className="timeline-badge">감식기</div>
                           <h3 className="timeline-title">5일</h3>
                           <p className="timeline-description">식사량을 절반으로 줄이며<br />몸을 준비하는 단계</p>
@@ -208,8 +282,9 @@ export default function Home() {
                           <p className="timeline-description">천천히 식사량을 회복하며<br />장 컨디션을 보호</p>
                           <p><br /></p>
                           <p className="timeline-description timeline-description-en">Protect</p>
+                          
                       </div>
-      
+                            
                       <div className="timeline-connector"></div>
       
                       <div className="timeline-item fade-in">
@@ -226,110 +301,250 @@ export default function Home() {
                           <p><br /></p>
                           <p className="timeline-description timeline-description-en">Keep</p>
                       </div>
+                      
+                                        </div>
+              </div>
+
+              
+              <br></br><br></br><br></br>
+              <div className="program-plan fade-in">
+                <h3 className="program-plan-title">20일 집중 플랜 한눈에 보기</h3>
+              
+                <p className="section-subtitle section-subtitle-warning program-warning">
+                      *빠른 체중감량 및 체질변화를 필요로 하시는 분에게 권장
+              </p>
+
+                <div className="program-plan-grid">
+                  {/* 절식기 카드 */}
+                  <div className="program-plan-card">
+                    <div className="program-plan-badge">절식기 10일</div>
+                    <p className="program-plan-caption">하루 세 끼를 효소로 채우는 집중 관리 기간</p>
+                    <ul className="program-plan-list">
+                      <li>
+                        <strong>아침</strong> : 밀자임 1포 + 디플러스 2포 + 큐자임 1포 + 차는 수시로
+                      </li>
+                      <li>
+                        <strong>점심</strong> : 밀자임 1포 + 차는 수시로 (공복이 느껴질 때마다)
+                      </li>
+                      <li>
+                        <strong>저녁</strong> : 밀자임 1포 + 디플러스 2포 + 큐자임 1포 + 차는 수시로
+                      </li>
+                    </ul>
+                    <p className="program-plan-note">
+                      배가 출출할 때마다 &apos;차&apos;를 수시로 마시면서 10일만 버틴다는 마음으로 따라오시면 됩니다.
+                    </p>
                   </div>
+
+                  {/* 보식기 카드 */}
+                  <div className="program-plan-card program-plan-card--soft">
+                    <div className="program-plan-badge accent">보식기 10일</div>
+                    <p className="program-plan-caption">무리하지 않고 일상 식사로 돌아오는 회복 기간</p>
+                    <ul className="program-plan-list">
+                      <li>
+                        <strong>아침 · 점심 · 저녁</strong> : 식사 후 애니원 슬림 1포
+                      </li>
+                    </ul>
+                    <p className="program-plan-note">
+                      폭식만 피하면서 슬림을 꾸준히 섭취하면 요요 걱정을 줄이는 데 도움이 됩니다.
+                    </p>
+                  </div>
+                </div>
               </div>
           </section>
-      
+                
           
           <section className="products-section" id="products">
-              <div className="container">
-                  <div className="section-header fade-in">
-                      <h2 className="section-title">프로그램 구성 제품</h2>
-                      <p className="section-subtitle">장 건강을 위한 파비스 애니원 프리미엄 라인업</p>
-                  </div>
-      
-                                    <div className="products-grid">
-                                            {productCards.map((card) => (
-                                                <article key={card.id} className="product-card fade-in relative">
-                                                    <div className="product-image">
-                                                        <Link href={card.href} className="group block relative">
-                                                            <div className="overflow-hidden rounded-2xl bg-[#F3F0E8]">
-                                                                <Image
-                                                                    src={card.image}
-                                                                    alt={card.alt}
-                                                                    width={600}
-                                                                    height={800}
-                                                                    className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                                                                />
-                                                            </div>
+            <div className="container">
+              {/* 프로그램 구성 제품 */}
+              <div className="section-header fade-in">
+                <h2 className="section-title">프로그램 구성 제품</h2>
+                <p className="section-subtitle">3개월 절식 · 장 디톡스 프로그램에 기본으로 사용하는 라인업</p>
+              </div>
 
-                                                            <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-                                                                <span className="rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                                                                    상품 보기
-                                                                </span>
-                                                            </div>
-                                                        </Link>
-                                                    </div>
+              <div className="products-grid">
+                {programProductCards.map((card) => (
+                  <article key={card.id} className="product-card fade-in relative">
+                    <div className="product-image">
+                      <Link href={card.href} className="group block relative">
+                        <div className="overflow-hidden rounded-2xl bg-[#F3F0E8]">
+                          <Image
+                            src={card.image}
+                            alt={card.alt}
+                            width={600}
+                            height={800}
+                            className="w-full h-auto max-h-[260px] object-contain md:h-64 md:object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                          />
+                        </div>
 
-                                                    <div className={`product-badge${card.badgeAccent ? " accent" : ""}`}>{card.badge}</div>
-                                                    <h3 className="product-name">{card.title}</h3>
-                                                    <p className="product-description">{card.description}</p>
-                                                    <div className="mt-3 space-y-1">
-                                                      <p className="text-xs text-zinc-400 line-through">
-                                                        정가 {card.originalPrice.toLocaleString("ko-KR")}원
-                                                      </p>
-                                                      <p className="text-lg font-bold text-emerald-600">
-                                                        {card.salePrice.toLocaleString("ko-KR")}원
-                                                        <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
-                                                          30% OFF
-                                                        </span>
-                                                      </p>
-                                                    </div>
-                                                </article>
-                                            ))}
-                                    </div>
-      
-                  <div className="packages">
-                      <h3 className="packages-title fade-in">추천 패키지</h3>
-      
-                      <div className="package-grid">
-                          <div className="package-card fade-in">
-                              <div className="package-label">BASIC</div>
-                              <h4 className="package-name">절식 프로그램 기본 세트</h4>
-                              <p className="package-description">디플러스, 밀자임, 차 조합으로<br />장 건강 기본 케어</p>
-                              <ul className="package-includes">
-                                  <li>파비스 디플러스 × 3박스</li>
-                                  <li>파비스 밀자임 × 3박스</li>
-                                  <li>파비스 차 × 3박스</li>
-                              </ul>
-                              <div className="package-price">
-                                  <span className="price-label">3개월 기준</span>
-                                  <span className="price">270,000원</span>
-                              </div>
-                          </div>
-      
-                          <div className="package-card featured fade-in">
-                              <div className="package-label accent">PREMIUM</div>
-                              <h4 className="package-name">집중 다이어트 세트</h4>
-                              <p className="package-description">슬림 추가로<br />체중 관리까지 한 번에</p>
-                              <ul className="package-includes">
-                                  <li>파비스 디플러스 × 3박스</li>
-                                  <li>파비스 슬림 × 3박스</li>
-                                  <li>파비스 큐자임 × 3박스</li>
-                                  <li>파비스 차 × 3박스</li>
-                              </ul>
-                              <div className="package-price">
-                                  <span className="price-label">3개월 기준</span>
-                                  <span className="price">360,000원</span>
-                              </div>
-                          </div>
-      
-                          <div className="package-card fade-in">
-                              <div className="package-label">CUSTOM</div>
-                              <h4 className="package-name">맞춤형 디톡스 세트</h4>
-                              <p className="package-description">개인 상태에 맞춘<br />1:1 맞춤 구성</p>
-                              <ul className="package-includes">
-                                  <li>전문가 상담 후 제품 선정</li>
-                                  <li>3개월 프로그램 설계</li>
-                                  <li>정기 체크업 포함</li>
-                              </ul>
-                              <div className="package-price">
-                                  <span className="price-label">상담 후 결정</span>
-                                  <span className="price">문의 필요</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+                        <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+                          <span className="rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                            상품 보기
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+
+                    <div className="product-badge">{card.badge}</div>
+                    <h3 className="product-name">{card.title}</h3>
+                    <p className="product-description">{card.description}</p>
+
+                    <div className="mt-3 space-y-1">
+                      <p className="product-price-original">
+                        정가 {card.originalPrice.toLocaleString("ko-KR")}원
+                      </p>
+                      <p className="product-price-sale">
+                        {card.salePrice.toLocaleString("ko-KR")}원
+                        <span className="product-price-sale-badge">
+                          {Math.round((1 - card.salePrice / card.originalPrice) * 100)}% 할인
+                        </span>
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+<section className="products-section" id="functional-products">
+  <div className="container">
+    <div className="section-header fade-in">
+      <h2 className="section-title">기능성 구성 제품</h2>
+      <p className="section-subtitle">
+        특정 고민에 맞춰 선택해서 추가할 수 있는 프리미엄 라인업
+      </p>
+    </div>
+
+    <div className="products-grid">
+      {functionalProductCards.map((card) => (
+        <article key={card.id} className="product-card fade-in relative">
+          <div className="product-image">
+            <Link href={card.href} className="group block relative">
+                        <div className="overflow-hidden rounded-2xl bg-[#F3F0E8]">
+                          <Image
+                            src={card.image}
+                            alt={card.alt}
+                            width={600}
+                            height={800}
+                            className="w-full h-auto max-h-[260px] object-contain md:h-64 md:object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                          />
+                        </div>              <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+                <span className="rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  상품 보기
+                </span>
+              </div>
+            </Link>
+          </div>
+
+          <div className="product-badge">{card.badge}</div>
+          <h3 className="product-name">{card.title}</h3>
+          <p className="product-description">{card.description}</p>
+
+          <div className="mt-3 space-y-1">
+            <p className="product-price-original">
+              정가 {card.originalPrice.toLocaleString("ko-KR")}원
+            </p>
+            <p className="product-price-sale">
+              {card.salePrice.toLocaleString("ko-KR")}원
+              <span className="product-price-sale-badge">
+                {Math.round((1 - card.salePrice / card.originalPrice) * 100)}% 할인
+              </span>
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+              <div className="packages">
+        <h3 className="packages-title fade-in">추천 패키지</h3>
+
+        <div className="package-grid">
+          {/* BASIC */}
+          <div className="package-card fade-in">
+            <div className="package-label">BASIC</div>
+            <h4 className="package-name">입문자 프로그램 SET</h4>
+            <p className="package-description">
+              디플러스, 밀자임, 애니원 차<br />
+              기본 제품으로 가볍게 START
+            </p>
+            <ul className="package-includes">
+              <li>디플러스 × 1박스</li>
+              <li>밀자임 × 1박스</li>
+              <li>애니원 차 × 1박스</li>
+            </ul>
+
+            <div className="package-price">
+              <span className="price-label">20일 기준</span>
+              <div className="price-row">
+                <span className="price-main">
+                  {formatPrice(BASIC_SALE)}원
+                </span>
+                <span className="price-discount">
+                  {getDiscountPercent(BASIC_ORIGINAL, BASIC_SALE)}% 할인
+                </span>
+              </div>
+              <span className="price-original">
+                정가 {formatPrice(BASIC_ORIGINAL)}원
+              </span>
+            </div>
+          </div>
+
+          {/* PREMIUM */}
+          <div className="package-card featured fade-in">
+            <div className="package-label accent">PREMIUM</div>
+            <h4 className="package-name">집중 프로그램 풀 SET</h4>
+            <p className="package-description">
+              파비스만의 체계적인 4단계 프로그램으로,<br />
+              체중 관리까지 한 번에
+            </p>
+            <ul className="package-includes">
+              <li>디플러스 × 1박스</li>
+              <li>밀자임 × 1박스</li>
+              <li>큐자임 × 1박스</li>
+              <li>슬림 × 1박스</li>
+              <li>애니원 차 × 1박스</li>
+            </ul>
+
+            <div className="package-price">
+              <span className="price-label">20일 기준</span>
+              <div className="price-row">
+                <span className="price-main">
+                  {formatPrice(PREMIUM_SALE)}원
+                </span>
+                <span className="price-discount">
+                  {getDiscountPercent(PREMIUM_ORIGINAL, PREMIUM_SALE)}% 할인
+                </span>
+              </div>
+              <span className="price-original">
+                정가 {formatPrice(PREMIUM_ORIGINAL)}원
+              </span>
+            </div>
+          </div>
+
+          {/* CUSTOM */}
+          <div className="package-card fade-in">
+            <div className="package-label">CUSTOM</div>
+            <h4 className="package-name">맞춤형 프로그램 SET</h4>
+            <p className="package-description">
+              개인 상태에 맞춘<br />
+              1:1 맞춤 구성
+            </p>
+            <ul className="package-includes">
+              <li>전문가 상담 후 제품 선정</li>
+              <li>개인별 프로그램 설계</li>
+              <li>정기 체크업 포함</li>
+            </ul>
+
+            <div className="package-custom-footer">
+              <p className="custom-label">상담 후 결정</p>
+              <p className="custom-price">문의 필요</p>
+
+              <button className="kakao-btn" type="button">
+                카카오 환영
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
               </div>
           </section>
       
@@ -417,12 +632,17 @@ export default function Home() {
                       <h3 className="chart-title">배 불편감 변화 추이</h3>
                       <div className="chart">
                           <div className="chart-line">
-                              <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+                              <svg
+                                  viewBox="0 0 400 200"
+                                  preserveAspectRatio="xMidYMid meet"
+                              >
                                   <polyline
                                       fill="none"
                                       stroke="#6BAA46"
-                                      strokeWidth="3"
-                                      points="0,50 100,60 200,100 300,150 400,180"
+                                      strokeWidth="4"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      points="0,60 120,80 220,120 320,160 400,180"
                                   />
                               </svg>
                           </div>

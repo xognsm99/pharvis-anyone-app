@@ -748,24 +748,33 @@ button {
 }
 
 .chart {
+    margin-top: 1.5rem;
     margin-bottom: 20px;
 }
 
 .chart-line {
     width: 100%;
-    height: 200px;
-    background-color: var(--cream-bg);
-    border-radius: 8px;
-    padding: 20px;
+    max-width: 100%;
+    aspect-ratio: 5 / 2;           /* PC/모바일 모두 일정한 비율 유지 */
+    background-color: #fbf7ee;     /* 연한 베이지 배경 */
+    border-radius: 18px;
+    overflow: hidden;               /* 선이 박스 밖으로 나가지 않도록 */
+    padding: 1.5rem 1.5rem 1rem;
+    box-sizing: border-box;
+}
+
+.chart-line svg {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .chart-labels {
     display: flex;
     justify-content: space-between;
-    padding: 0 20px;
-    margin-top: 15px;
-    font-size: 14px;
-    color: var(--text-gray);
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
 }
 
 .chart-note {
@@ -1150,7 +1159,7 @@ button {
     padding: 20px;
 }
 
-.modal.active {
+.modal.open {
     display: flex;
 }
 
@@ -1346,4 +1355,314 @@ button {
 .timeline-description.timeline-description-en {
   color: #558899 !important;
   font-weight: 600;
+}
+.section-subtitle-warning {
+  color: #d93025;        /* 빨간색 계열 */
+  font-weight: 700;      /* 굵게 */
+  font-size: 0.85rem;    /* 기본보다 조금 작게 (필요하면 0.8rem 등으로 조절) */
+}
+
+.program-warning {
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+/* Program Plan Section */
+.program-plan {
+  max-width: 980px;
+  margin: 40px auto 60px;
+  padding: 32px 32px 40px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.04);
+  text-align: left;
+}
+
+.program-plan-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6px;
+  color: #1f2933;
+}
+
+.program-plan-subtitle {
+  font-size: 0.95rem;
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.program-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.program-plan-card {
+  background: #f9fafb;
+  border-radius: 18px;
+  padding: 20px 22px 22px;
+  border: 1px solid #e5e7eb;
+}
+
+.program-plan-card--soft {
+  background: #fff9f5;
+  border-color: #fed7aa;
+}
+
+.program-plan-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e5f4e8;
+  color: #166534;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.program-plan-badge.accent {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.program-plan-caption {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-bottom: 12px;
+}
+
+.program-plan-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.program-plan-list li + li {
+  margin-top: 6px;
+}
+
+.program-plan-list strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+.program-plan-note {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  .program-plan {
+    margin: 32px 16px 40px;
+    padding: 24px 18px 28px;
+  }
+  .program-plan-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Product Price Styling - Reusable Classes */
+.product-price-original {
+  font-size: 0.75rem;        /* 12px */
+  color: #c0392b;            /* 진한 빨강색 */
+  text-decoration: line-through;
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.product-price-sale {
+  font-size: 1.125rem;       /* 18px */
+  font-weight: 700;
+  color: #166534;            /* 진한 초록 */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-price-sale-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  padding: 0.125rem 0.5rem;  /* 2px 8px */
+  border-radius: 9999px;
+  background-color: #dcfce7; /* 연한 초록 배경 */
+  font-size: 0.6875rem;       /* 11px */
+  font-weight: 600;
+  color: #166534;            /* 진한 초록 */
+}
+
+@media (max-width: 640px) {
+  .product-price-sale {
+    font-size: 1rem;
+  }
+  .product-price-original {
+    font-size: 0.7rem;
+  }
+}
+
+.package-original {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #e53935; /* 진한 레드 */
+  font-weight: 700;
+}
+
+.package-original-top {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.kakao-welcome-btn {
+  margin-top: 1.25rem;
+  width: 100%;
+  padding: 0.8rem 0;
+  border-radius: 999px;
+  border: 2px solid #e53935;
+  background-color: #fff5f5;
+  color: #e53935;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.kakao-welcome-btn:hover {
+  background-color: #e53935;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* 패키지 가격 영역 공통 정리 */
+.package-price {
+  margin-top: 1.75rem;
+  text-align: center;
+}
+
+.price-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.price-main {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.price-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #999999;
+  margin-bottom: 0.25rem;
+}
+
+.price-discount {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2e7d32; /* 초록색 할인율 */
+}
+
+.price-original {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e53935;              /* 빨간색 */
+  text-decoration: line-through; /* 정가 사선 처리 */
+}
+
+.package-card.featured .price-main {
+  font-size: 1.8rem;
+}
+
+.kakao-btn {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  margin-top: 1.25rem;
+  border-radius: 999px;
+  border: 2px solid #FEE500;   /* 카카오 노란색 테두리 */
+  background-color: #ffffff;
+  color: #3C1E1E;
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease,
+              transform 0.1s ease;
+}
+
+
+.kakao-btn:hover {
+    background-color: #FEE500;  /* 호버 시 노란색 채움 */
+    color: #222222;
+    transform: translateY(-1px);
+}
+
+/* 제품 그리드: 프로그램/기능성 동일 규격 - 반응형 */
+.products-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+/* PC (1024px 이상): 3열 */
+@media (min-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* 태블릿 (768px ~ 1023px): 2열 */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 모바일 (767px 이하): 1열 */
+@media (max-width: 767px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* 카드 이미지 높이 및 반응형 */
+.product-card .product-image img {
+    width: 100%;
+    height: 16rem;      /* h-64 와 동일 (대략 256px) */
+    object-fit: cover;  /* 위아래 적당히 잘리면서 비율 유지 */
+    display: block;
+}
+
+/* 모바일에서 이미지 높이 조정 */
+@media (max-width: 767px) {
+    .product-card .product-image img {
+        height: 14rem; /* 모바일에서는 약간 더 낮게 */
+    }
+}
+
+/* 가격 영역을 카드 하단에 고정 */
+.product-card .mt-3 {
+    margin-top: auto;
+}
+
+/* 카드 레이아웃 균형 조정: 동일 높이, 이미지 비율 고정, 가격 하단 고정 */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }

@@ -55,44 +55,41 @@
     });
 
     // ===== 4. 리뷰 모달 =====
-    const modal = document.getElementById("reviewModal");
+    const reviewModal = document.getElementById("reviewModal");
     const modalBody = document.getElementById("modalBody");
     const modalClose = document.getElementById("modalClose");
 
-    if (modal && modalBody) {
-      const reviewCards = document.querySelectorAll(".review-card");
+    if (reviewModal && modalBody && modalClose) {
+      const reviewButtons = document.querySelectorAll(".review-more");
 
-      reviewCards.forEach((card) => {
-        const btn = card.querySelector(".review-more");
-        if (!btn) return;
+      const openReviewModal = (card) => {
+        const clone = card.cloneNode(true);
+        const cloneButton = clone.querySelector(".review-more");
+        if (cloneButton) cloneButton.remove();
 
+        modalBody.innerHTML = "";
+        modalBody.appendChild(clone);
+
+        reviewModal.classList.add("open");
+      };
+
+      const closeReviewModal = () => {
+        reviewModal.classList.remove("open");
+      };
+
+      reviewButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-          modal.classList.add("open");
-          const text = card.querySelector(".review-text")?.textContent || "";
-          const author = card.querySelector(".author-name")?.textContent || "";
-          const age = card.querySelector(".author-age")?.textContent || "";
-          const rating = card.querySelector(".review-rating")?.textContent || "";
-
-          modalBody.innerHTML = `
-            <div class="review-modal-inner">
-              <div class="review-rating">${rating}</div>
-              <p class="review-text">${text}</p>
-              <div class="review-author">
-                <span class="author-name">${author}</span>
-                <span class="author-age">${age}</span>
-              </div>
-            </div>
-          `;
+          const card = btn.closest(".review-card");
+          if (!card) return;
+          openReviewModal(card);
         });
       });
 
-      modalClose?.addEventListener("click", () => {
-        modal.classList.remove("open");
-      });
+      modalClose.addEventListener("click", closeReviewModal);
 
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          modal.classList.remove("open");
+      reviewModal.addEventListener("click", (event) => {
+        if (event.target === reviewModal) {
+          closeReviewModal();
         }
       });
     }
