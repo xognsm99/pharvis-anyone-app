@@ -1640,20 +1640,27 @@ button {
     }
 }
 
-/* 카드 이미지 높이 및 반응형 */
-.product-card .product-image img {
-    width: 100%;
-    height: 16rem;      /* h-64 와 동일 (대략 256px) */
-    object-fit: cover;  /* 위아래 적당히 잘리면서 비율 유지 */
-    display: block;
+/* 이미지 박스 자체를 비율 박스로 만들기 */
+.product-card .product-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;      /* 4:3 비율 박스 (필요하면 1/1, 3/2 등 바꿔도 됨) */
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #f3f0e8;
 }
 
-/* 모바일에서 이미지 높이 조정 */
-@media (max-width: 767px) {
-    .product-card .product-image img {
-        height: 14rem; /* 모바일에서는 약간 더 낮게 */
-    }
+/* 그 안에 들어가는 실제 이미지 */
+.product-card .product-image img {
+  position: absolute;
+  inset: 0;                 /* top:0; right:0; bottom:0; left:0; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* 가로 꽉 채우고 위·아래 살짝 잘림 */
+  display: block;
 }
+
+
 
 /* 가격 영역을 카드 하단에 고정 */
 .product-card .mt-3 {

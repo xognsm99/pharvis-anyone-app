@@ -25,6 +25,7 @@ type ProductCard = {
   originalPrice: number;
   salePrice: number;
   badgeAccent?: boolean;
+  naverUrl: string;
 };
 
 const programProductCards: ProductCard[] = [
@@ -39,6 +40,7 @@ const programProductCards: ProductCard[] = [
     badgeAccent: true,
     originalPrice: 224000,
     salePrice: 156800, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11747570970",
   },
   {
     id: "milzyme",
@@ -50,6 +52,7 @@ const programProductCards: ProductCard[] = [
     alt: "파비스 애니원 밀자임 효소",
     originalPrice: 134000,
     salePrice: 93800, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11747668162",
   },
   {
     id: "dplus",
@@ -61,6 +64,7 @@ const programProductCards: ProductCard[] = [
     alt: "파비스 애니원 디플러스 효소",
     originalPrice: 84000,
     salePrice: 58800, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11747678847",
   },
   {
     id: "tea",
@@ -72,6 +76,7 @@ const programProductCards: ProductCard[] = [
     alt: "파비스 애니원 다이어트 차",
     originalPrice: 50000,
     salePrice: 35000, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11747703560",
   },
   {
     id: "qzyme",
@@ -83,6 +88,7 @@ const programProductCards: ProductCard[] = [
     alt: "파비스 애니원 큐자임 효소",
     originalPrice: 84000,
     salePrice: 58800, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11747693511",
   },
 ];
 
@@ -97,6 +103,7 @@ const functionalProductCards: ProductCard[] = [
     alt: "파비스 애니원 속자임 효소",
     originalPrice: 108000,
     salePrice: 75600, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11757593273",
   },
   {
     id: "sumzyme",
@@ -108,6 +115,7 @@ const functionalProductCards: ProductCard[] = [
     alt: "파비스 숨자임",
     originalPrice: 140000,
     salePrice: 98000, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11746588991",
   },
   {
     id: "sunzyme",
@@ -119,6 +127,7 @@ const functionalProductCards: ProductCard[] = [
     alt: "파비스 썬자임",
     originalPrice: 132000,
     salePrice: 92400, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11746588991",
   },
   {
     id: "prozyme",
@@ -130,6 +139,7 @@ const functionalProductCards: ProductCard[] = [
     alt: "파비스 프로자임 (이미지 교체 예정)",
     originalPrice: 140000,
     salePrice: 98000, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11746588991",
   },
   {
     id: "activezyme",
@@ -141,6 +151,7 @@ const functionalProductCards: ProductCard[] = [
     alt: "파비스 활동자임 (이미지 교체 예정)",
     originalPrice: 140000,
     salePrice: 98000, // 30% OFF
+    naverUrl: "https://smartstore.naver.com/ehoon2/products/11746588991",
   },
 ];
 
@@ -365,7 +376,9 @@ export default function Home() {
                 {programProductCards.map((card) => (
                   <article key={card.id} className="product-card fade-in relative">
                     <div className="product-image">
-                      <Link href={card.href} className="group block relative">
+                      <Link href={card.naverUrl} 
+                      target="_blank"  
+                      className="group block relative">
                         <div className="overflow-hidden rounded-2xl bg-[#F3F0E8]">
                           <Image
                             src={card.image}
@@ -413,25 +426,33 @@ export default function Home() {
     </div>
 
     <div className="products-grid">
-      {functionalProductCards.map((card) => (
-        <article key={card.id} className="product-card fade-in relative">
-          <div className="product-image">
-            <Link href={card.href} className="group block relative">
-                        <div className="overflow-hidden rounded-2xl bg-[#F3F0E8]">
-                          <Image
-                            src={card.image}
-                            alt={card.alt}
-                            width={600}
-                            height={800}
-                            className="w-full h-auto max-h-[260px] object-contain md:h-64 md:object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                          />
-                        </div>              <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-                <span className="rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                  상품 보기
-                </span>
-              </div>
-            </Link>
+  {functionalProductCards.map((card) => (
+    <article key={card.id} className="product-card fade-in relative">
+      <div className="product-image">
+        <Link
+          href={card.naverUrl}              // ✅ 네이버 링크로 변경
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block relative"
+        >
+          <div className="overflow-hidden rounded-2xl bg-[#F3F0E8]">
+            <Image
+              src={card.image}
+              alt={card.alt}
+              width={600}
+              height={800}
+              className="w-full h-auto max-h-[260px] object-contain md:h-64 md:object-contain transition-transform duration-300 group-hover:scale-[1.02]" 
+              // ⬆️ md:object-cover → md:object-contain 으로 바꿔서 짤림 방지
+            />
           </div>
+          <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+            <span className="rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              상품 보기
+            </span>
+          </div>
+        </Link>
+      </div>
+
 
           <div className="product-badge">{card.badge}</div>
           <h3 className="product-name">{card.title}</h3>
